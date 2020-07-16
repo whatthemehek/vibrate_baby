@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:vibration/vibration.dart';
+import 'package:audioplayers/audio_cache.dart';
 
 void main() {
   runApp(MyApp());
@@ -25,13 +27,24 @@ class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
+
+final AudioCache player = new AudioCache();
+
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   void _incrementCounter() {
     setState(() {
       _counter++;
+      _vibrate();
     });
+  }
+
+  void _vibrate() async {
+    if (await Vibration.hasVibrator() && await Vibration.hasCustomVibrationsSupport()) {
+      //Vibration.vibrate();
+      Vibration.vibrate(pattern: [10, 240, 10, 240, 10, 240, 10, 240]);
+    }
   }
 
   @override
